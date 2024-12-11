@@ -8,9 +8,20 @@ type User = {
   role: string;
   email: string;
   telephone: string;
-  bluesky: string;
-  linkedin: string;
-  mastodon: string;
+  social: {
+    bluesky: {
+      name: string;
+      url: string;
+    };
+    linkedin: {
+      name: string;
+      url: string;
+    };
+    mastodon: {
+      name: string;
+      url: string;
+    };
+  };
 };
 
 const response = await fetch(
@@ -59,42 +70,20 @@ if (response.ok) {
                 </span>
 
                 <ul class="user-card-social">
-                  <li>
-                    <a
-                      class="icon icon-social-bsky"
-                      href={user.bluesky}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span class="visually-hidden">
-                        Follow {user.firstName} on Bluesky
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="icon icon-social-linkedin"
-                      href={user.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span class="visually-hidden">
-                        Follow {user.firstName} on LinkedIn
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="icon icon-social-mastodon"
-                      href={user.mastodon}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span class="visually-hidden">
-                        Follow {user.firstName} on Mastodon
-                      </span>
-                    </a>
-                  </li>
+                  {Object.entries(user.social).map(([key, value]) => (
+                    <li>
+                      <a
+                        class={`icon icon-social-${key}`}
+                        href={value.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span class="visually-hidden">
+                          Follow {user.firstName} on {value.name}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </article>
             </li>
